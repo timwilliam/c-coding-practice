@@ -4,6 +4,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 int main(void){
 	int n_test, n_days, n_party, hartal_param[100], i, j;
@@ -11,7 +12,7 @@ int main(void){
 
 	scanf("%d", &n_test);
 	while(n_test > 0){
-		memset(hartal_days, 0, 3650); lost_days = 0; fri = 6; sat = 7;
+		memset(hartal_days, 0, 3650); lost_days = 0;
 
 		scanf("%d", &n_days);	
 		scanf("%d", &n_party);
@@ -19,7 +20,8 @@ int main(void){
 
 		// Go through all party and mark the hartal days, skipping duplicate
 		for(i = 0; i < n_party; i++){
-			for(j = 1; j < n_days; j++){
+			fri = 6; sat = 7;
+			for(j = 1; j <= n_days; j++){
 				// Skip Friday, and Saturday
 				if(j == fri){
 				   	fri += 7;
@@ -31,12 +33,17 @@ int main(void){
 				}
 				
 				// Mark the days that have hartals
-				if(j % hartal_param[i] == 0) hartal_days[j - 1] = 1;
+				if(j % hartal_param[i] == 0){
+					hartal_days[j - 1] = 1;
+					printf("party=%d: days=%d\n", i, j);
+				}
 			}
+
+
 		}	
 
 		// Calculate number of working days lose
-		for(i = 0; i < n_days; i++){
+		for(i = 1; i <= n_days; i++){
 			if(hartal_days[i] == 1) lost_days += 1;
 		}
 
