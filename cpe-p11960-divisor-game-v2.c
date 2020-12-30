@@ -12,12 +12,17 @@
 
 int main(void){
 	int N, T, i, j, count, candidate[2], memory[1000000] = {0}; 
-	scanf("%d", &T);
+	//scanf("%d", &T);
 
 	int check = 0;
 
+	// For benchmark
+	T = 6;
+	int N_bench[6] = {999999, 95473, 389384, 9234, 101, 514};
+
 	while(T > 0){
-		scanf("%d", &N);
+		N = N_bench[T-1];
+		//scanf("%d", &N);
 		
 		candidate[0] = 0; // 0: For storing the count of how many divisor a number has
 		candidate[1] = 0; // 1: For storing the number currently being process
