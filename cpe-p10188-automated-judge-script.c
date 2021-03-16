@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main(void){
-	int n, m, i, j, len, err_count, char_read, temp, run;
+	int n, m, i, j, k, len, err_count, char_read, temp, run, sol_wht_count, output_wht_count;
 	char solution[100][120], team_output[100][120];
 	
 	run = 0;
@@ -44,18 +44,42 @@ int main(void){
 
 		// Check algorithm
 		err_count = 0; char_read = 0;
+		sol_wht_count = 0; output_wht_count = 0;
 		for(i = 0; i < n; i++){
 			len = strlen(solution[i]);
 
-			// Go through each line
-			for(j = 0; j < len; j++){
-				//printf("sol %c; team %c\n", solution[i][j], team_output[i][j]);
-				if(solution[i][j] != team_output[i][j])	err_count++;
-				char_read++;
+			j = 0; k = 0;
+			while(1){
+				if(j == len) break;
+
+				// Count how many white space are there
+				if(solution[i][j] == ' ') sol_wht_count++;
+				if(team_output[i][k] == ' ') output_wht_count++;
+	
+							
+				if(solution[i][j] != team_output[i][k]){
+					while(team_output[i][k] != ' '){
+						output_wht_count++;
+						k++;
+					}
+
+					if(solution[i][j] != team_output[i][k])				
+						err_count++;
+				}
+
+				j++; k++; char_read++;
 			}
+			
+			printf("whte sol %d, whte output %d\n", sol_wht_count, output_wht_count);
 		}
 
 		// Print the verdict
-		printf("Run #%d: Result, read = %d, error = %d\n", run, char_read, err_count);
+		if(err_count == 0){
+			if(sol_wht_count != output_wht_count)
+				printf("Run #%d: Presentation Error %d\n", run, char_read);
+			else 
+				printf("Run #%d: Accepted %d\n", run, char_read);
+		}
+		else printf("Run #%d: Wrong Answer %d\n", run, char_read);
 	}
 }
