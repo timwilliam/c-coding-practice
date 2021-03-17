@@ -1,10 +1,14 @@
+// Program	: CPE - p10188 Automated Judge Script
+// Author	: Timothy William
+// Compiled	: 03/17/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int main(void){
 	int n, m, i, j, k, len, err_count, char_read, temp, run, sol_wht_count, output_wht_count;
-	char solution[100][120], team_output[100][120];
+	char solution[100][120], team_output[100][120], temp_sol[120], temp_output[120];
 	
 	run = 0;
 	while(1){
@@ -41,37 +45,58 @@ int main(void){
 			team_output[i][strcspn(team_output[i], "\n")] = 0; // Trim new line
 			i++;
 		}
-
-		// Check algorithm
+	
 		err_count = 0; char_read = 0;
 		sol_wht_count = 0; output_wht_count = 0;
-		for(i = 0; i < n; i++){
+
+		// Check algorithm
+		// - Read all the character in the string
+		// - When reading, remove white space
+		// - Then check if solution and team_output is equal by using strcmp()
+
+		i = 0;
+		while(1){
+			memset(temp_sol, 0, 120);
+			memset(temp_output, 0, 120);
+			
 			len = strlen(solution[i]);
+			j = 0;
 
-			j = 0; k = 0;
-			while(1){
-				if(j == len) break;
-
-				// Count how many white space are there
-				if(solution[i][j] == ' ') sol_wht_count++;
-				if(team_output[i][k] == ' ') output_wht_count++;
-	
-							
-				if(solution[i][j] != team_output[i][k]){
-					while(team_output[i][k] != ' '){
-						output_wht_count++;
-						k++;
-					}
-
-					if(solution[i][j] != team_output[i][k])				
-						err_count++;
+			// Check solution
+			while(len--){
+				if(solution[i][len] == ' '){
+					sol_wht_count++;
+				}
+				else{
+					temp_sol[j]	= solution[i][len];
+					j++;
 				}
 
-				j++; k++; char_read++;
+				char_read ++;
+			}
+
+			// Check team_output
+			len = strlen(team_output[i]);
+			j = 0;
+			while(len--){
+				if(team_output[i][len] == ' '){
+					output_wht_count++;
+				}
+				else{
+					temp_output[j]	= team_output[i][len];
+					j++;
+				}
 			}
 			
-			printf("whte sol %d, whte output %d\n", sol_wht_count, output_wht_count);
+			if(strcmp(temp_sol, temp_output) != 0) err_count ++;
+
+			i++;
+			if(i == n) break;
 		}
+
+		//printf("sol %d, output %d\n", sol_wht_count, output_wht_count);		
+		// TODO: Implement algorithm to properly check when n != m
+		// TODO: Implement algorithm to properly check for Presentation Error case, now, as long as white space count is the same, it will always counted as Accepted eventhough it should be clearly marked as Presentation Error
 
 		// Print the verdict
 		if(err_count == 0){
