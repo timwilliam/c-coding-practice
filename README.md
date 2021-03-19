@@ -1,1 +1,1 @@
-# c-practice
+# Tim's Coding Practice
