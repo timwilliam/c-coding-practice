@@ -4,7 +4,9 @@
 - Useful in array for strings too.
 - Assume: `target_array[100][120]`
 ```c
-	memset(target_array, 0, sizeof(target_array[0][0] * 100 * 120))
+#include<string.h>
+	
+memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 ```
 
 **Trim new line character before `fgets()`**
