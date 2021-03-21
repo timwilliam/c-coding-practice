@@ -50,6 +50,7 @@ memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 ```
 
 **Sort Array Ascending**
+- For Array
 ```c
 int cmpfunc(const void *a, const void *b){
 	// Swap a & b position to make it sort Descending !!!
@@ -63,3 +64,23 @@ int main(void){
 }
 ```
 
+- For Structure
+```c
+struct order{
+	int number;
+};
+
+int fcmp(const void *a, const void *b){
+	return((struct order*)a)->number - ((struct order*)b)->number);
+}
+
+int main(void){
+	qsort(orders, n, sizeof(struct(order), fcmp);
+}
+```
+
+**Defining a Macro Function**
+```c
+#define MAX(x, y) (x > y? x : y)
+#define MIN(x, y) (x < y? x : y)
+```
