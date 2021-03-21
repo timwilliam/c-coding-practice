@@ -31,7 +31,7 @@ memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 	char input[100];
 
 	fgets(input, 100, stdin);
-	input[strcspn(input, 0, "\n")] = 0;
+	input[strcspn(input, "\n")] = 0;
 ```
 
 ** Check if an index has been processed before**
@@ -83,4 +83,18 @@ int main(void){
 ```c
 #define MAX(x, y) (x > y? x : y)
 #define MIN(x, y) (x < y? x : y)
+```
+
+**Split Strings into Tokens**
+```c
+char *token;
+char text[5] = "test";
+char delim[2] = " ";
+
+token = strtok(text, delim);
+
+while(token != NULL){
+	printf("%s\n", token);
+	token = strtok(NULL, delim);
+}
 ```
