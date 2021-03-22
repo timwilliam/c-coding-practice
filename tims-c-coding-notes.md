@@ -98,3 +98,10 @@ while(token != NULL){
 	token = strtok(NULL, delim);
 }
 ```
+
+**Copy an Array to another Array**
+```c
+int original[15], copy[15];
+
+memcpy(copy, original, sizeof(int) * 15);
+```
