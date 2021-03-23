@@ -8,7 +8,7 @@
 
 int main(void){
 	int i, j, k, n, m, solution_wht, input_wht, len, error_count, char_read, case_count;
-	char solution[100][120], input[100][120], *token, temp_solution[120], temp_input[120], delim[2] = " ";
+	char solution[100][120], input[100][120], *token, temp_solution[12000], temp_input[12000], delim[2] = " ";
 
 	case_count = 1;
 	while(1){
@@ -34,6 +34,8 @@ int main(void){
 		}
 
 		// Process the input
+		memset(temp_solution, 0, 12000);
+		memset(temp_input, 0, 12000);
 		solution_wht = input_wht = 0; char_read = 0; error_count = 0;
 		for(i = 0; i < n; i++){
 			// Calculate number of white space
@@ -45,30 +47,31 @@ int main(void){
 				char_read++;
 			}
 			
-			len = strlen(input[i]);
-			for(j = 0; j < len; j++){
-				if(input[i][j] == ' ') input_wht++;
-			}
-			
 			// Split the strings and append it to a temporary array for comparison
-			memset(temp_solution, 0, 120);
-			memset(temp_input, 0, 120);
-
+			
 			token = strtok(solution[i], delim);
 			while(token != NULL){
 				strcat(temp_solution, token);
 				token = strtok(NULL, delim);
 			}
 			
+		}
+
+		for(i = 0; i < m; i++){
+			len = strlen(input[i]);
+			for(j = 0; j < len; j++){
+				if(input[i][j] == ' ') input_wht++;
+			}
+
 			token = strtok(input[i], delim);
 			while(token != NULL){
 				strcat(temp_input, token);
 				token = strtok(NULL, delim);
 			}
-
-			// Check if there is any mismatch in the text
-			if(strcmp(temp_solution, temp_input) != 0) error_count++;
 		}
+
+		// Check if there is any mismatch in the text
+		if(strcmp(temp_solution, temp_input) != 0) error_count++;
 
 		// Print out the verdict
 		if(error_count == 0){
