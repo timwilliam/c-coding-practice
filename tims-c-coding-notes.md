@@ -105,3 +105,19 @@ int original[15], copy[15];
 
 memcpy(copy, original, sizeof(int) * 15);
 ```
+
+**Defining a 2D Array**
+```c
+int array[2][5] = {
+	{0, 1, 2, 3, 4},
+	{5, 6, 7, 8, 9}
+};
+
+int i, j;
+for(i = 0; i < 2; i++){
+	for(j = 0; j < 5; j++){
+		printf("%d, ", array[i][j]);
+   	}
+	printf("\n");
+}
+```
