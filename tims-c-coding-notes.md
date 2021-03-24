@@ -16,7 +16,7 @@ memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 	getchar();
 ```
 
-** Loop for n amount of times**
+**Loop for n amount of times**
 ```c
 	scanf("%d", &n);
 	getchar();
@@ -26,7 +26,7 @@ memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 	}
 ```
 
-** Trim new line character in an array**
+**Trim new line character in an array**
 ```c
 	char input[100];
 
@@ -34,7 +34,7 @@ memset(target_array, 0, sizeof(target_array[0][0]) * 100 * 120)
 	input[strcspn(input, "\n")] = 0;
 ```
 
-** Check if an index has been processed before**
+**Check if an index has been processed before**
 ```c
 	int checked[1000] = {0}, temp;
 	time_t t;
