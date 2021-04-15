@@ -121,3 +121,13 @@ for(i = 0; i < 2; i++){
 	printf("\n");
 }
 ```
+
+**Find a string in another string**
+```c
+const char haystack[20] = "This is a test";
+const char needle[10] = "is";
+char *ret;
+
+ret = strstr(haystack, needle); // will get the substring
+printf("The substring is: %s\n", ret);
+```
