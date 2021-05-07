@@ -1,83 +1,56 @@
-// Program	: UVA - 10642
+// Problem	: UVA 10642 - Can You Solve It
 // Author	: timwilliam
-// Compiled	: 05/07/2021
+// Compiled : 05/07/2021
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int main(void){
-	int n, x, y, x_path[1000000], y_path[1000000], i, j, k, n_step, counter, limit, x_des, y_des;
+int get_location_index(int x, int y){
+	if(x == 0 && y == 0){
+		return 0;
+	}
 
-	memset(x_path, 0, sizeof(x_path));
-	memset(y_path, 0, sizeof(y_path));
+	int i, j, counter, lim,index;
 
-	// generate y_path
-	limit = 1;
-	counter = limit;
-	for(i = 0; i < 1000000; i++){
-		if(i == 0){
-			y_path[i] = 0;
-			continue;
+	index = 0; i = 0; j = 0; lim = 1; counter = 0;
+
+	while(1){
+		index++;
+		printf("idx %d\n", index);
+		i = lim - counter;
+		j = counter;
+
+		printf("i, j %d, %d; x,y %d,%d\n", i, j, x, y);
+		
+		if(i == x && j == y){
+			break;
 		}
-
-		if(counter >= 0 && counter <= limit){
-			y_path[i] = counter;
-			counter--;
-		}
-		else{
-			limit++;
-			y_path[i] = limit;
-			counter = limit - 1;
-		}
-
-	}	
-
-	// NOTE: Algorithm works, but might not cover the entire possible input space, need a better way
-	//printf("limit %d, counter %d\n", limit, counter);
-
-	// generate x_path
-	limit = 1;
-	counter = 0;
-	for(i = 0; i < 1000000; i++){
-		if(i == 0){
-			x_path[i] = 0;
-			continue;
-		}
-
-		if(counter <= limit){
-			x_path[i] = counter;
+		
+		if(i >= 0 && j <= lim){
 			counter++;
 		}
-		else{
-			limit++;
-			x_path[i] = 0;
-			counter = 1;
+		
+		if(i == 0 && j == lim){
+			lim++;
+			counter = 0;
+			i = lim;
+			j = 0;
 		}
+	}
 
-	}	
-	
+	return index;
+}
+
+int main(void){
+	int n, x, y, x_des, y_des, i, start, end;
+
 	scanf("%d", &n);
-	for(k = 1; k <= n; k++){
+	for(i = 1; i <= n; i++){
 		scanf("%d %d %d %d", &x, &y, &x_des, &y_des);
-		n_step = 0;
 
-		// get the starting point
-		for(i = 0; i < 1000000; i++){
-			if(x == x_path[i] && y == y_path[i]){
-				n_step = i;
-				break;
-			}
-		}
-
-		// calculate steps taken
-		for(i = i; i < 1000000; i++){
-			if(x_des == x_path[i] && y_des == y_path[i]){
-				n_step = i - n_step;
-				break;
-			}
-		}
-
-		printf("Case %d: %d\n", k, n_step);
+		start = get_location_index(y, x);
+		end = get_location_index(y_des, x_des);
+		printf("Case %d: %d\n", i, end - start);		
 	}
 }
