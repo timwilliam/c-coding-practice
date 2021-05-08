@@ -1,3 +1,7 @@
+// Problem  : UVA 10057 - A Mid-summer Night's Dream
+// Author   : timwilliam
+// Compiled : 05/08/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,7 +38,7 @@ int main(void){
             //printf("[DBG] A_min = %d\n", A_min);
         }
 
-        // how many input satisfy property of A
+        // 2. Get the number of A that gives the minimum sum
         n_of_A_min = 0;
         for(i = 0; i < n; i++){
             sum = 0;
@@ -47,8 +51,22 @@ int main(void){
             }
         }
 
-        // how many possible values for A
+        // 3. Get the number of possible values for A
         n_of_psbl_A = 0;    
+        for(i = 0; i < 65536; i++){
+            sum = 0;
+            for(j = 0; j < n; j++){
+                sum += abs(x[j] - i);
+                
+                if(sum > min_sum){
+                    break;
+                }
+            }
+
+            if(sum == min_sum){
+                n_of_psbl_A++;
+            }
+        }
 
         // Print the result
         printf("%d %d %d\n", A_min, n_of_A_min, n_of_psbl_A);
