@@ -2,36 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-void print_array(int A[], int n){
+void print_str(char str[4][30], int n){
 	int i;
 	printf("Array: ");
 	for(i = 0; i < n; i++){
-		printf("%d ", A[i]);
+		printf("%s, ", str[i]);
 	}
 	printf("\n");
 }
 
 // sort the array ascendingly using insertion sort
-void sort_array(int A[], int n){
-	int key, value, temp, i;
+void sort_str(char str[4][30], int n){
+	int key, i;
+	char word[30];
 	
 	for(i = 1; i < n; i++){
-		key = i;
-		value = A[key];
+		memset(word, 0, sizeof(word));
 
-		while(key > 0 && value < A[key-1]){
-			A[key] = A[key-1];
+		key = i;
+		strcpy(word, str[i]);
+
+		while(key > 0 && strcmp(word, str[key-1]) < 0){
+			strcpy(str[key], str[key-1]);
 			key--;	
 		}
 
-		A[key] = value;
+		strcpy(str[key], word);
 	}
 }
 
 int main(void){
-	int A[] = {7, 4, 1, 5, 3};
-	int n = 5;
-	
-	sort_array(A, n);
-	print_array(A, n);
+	char str[4][30] = {"Cherry", "Ash", "Basswood", "Aspen"};
+	int n = 4;
+
+	print_str(str, n);
+	sort_str(str, n);
+	print_str(str, n);
 }
