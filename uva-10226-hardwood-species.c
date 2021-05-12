@@ -1,3 +1,7 @@
+// Problem	: UVA 10226 - Hardwood Species
+// Author	: timwilliam
+// Compiled	: 05/12/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +35,7 @@ void sort_str(char **str, int n){
 }
 
 // count the population of the species
-void calculate_pop_percentage(char **str, int n, int n_pop){
+void calculate_pop_percentage(char **str, int n_pop){
 	int i, current_species_count;
 	double percentage;
 	char current_species[30];
@@ -40,7 +44,7 @@ void calculate_pop_percentage(char **str, int n, int n_pop){
 	// 					and using strchr() to get the last occurence of string
 
 	current_species_count = 1;
-	for(i = 0; i < n; i++){
+	for(i = 0; i < n_pop; i++){
 		strcpy(current_species, str[i]);
 
 		if(strcmp(current_species, str[i+1]) == 0){
@@ -57,7 +61,7 @@ void calculate_pop_percentage(char **str, int n, int n_pop){
 
 int main(void){
 	char **str_list, buffer[30];
-	int i, n_pop, POP_MAX, SPEC_MAX, SPEC_NAME_LEN;
+	int i, n_pop, POP_MAX, SPEC_MAX, SPEC_NAME_LEN, T;
 
 	POP_MAX = 1000000;
 	SPEC_MAX = 10000;
@@ -65,19 +69,34 @@ int main(void){
 
 	// allocate space to store the pointer to each string in the list
 	str_list = malloc(POP_MAX * sizeof(char*));
-	for(i = 0; i < POP_MAX; i++){
+	for(i = 0; i < POP_MAX; i++)
 		str_list[i] = malloc(SPEC_NAME_LEN * sizeof(char));
+
+	scanf("%d", &T);
+	getchar();
+
+	while(T--){
+		n_pop = -1;
+		while(1){
+			if(n_pop < 0){
+				getchar();
+				n_pop++;
+				continue;
+			}
+
+			memset(buffer, 0, sizeof(buffer));
+			fgets(buffer, 30, stdin);
+
+			if(buffer[0] == '\n')
+				break;
+
+			strcpy(str_list[n_pop], buffer);
+			str_list[n_pop][strcspn(str_list[n_pop], "\n")] = 0; // remove newline '\n'
+
+			n_pop++;
+		}
+
+		sort_str(str_list, n_pop); 
+		calculate_pop_percentage(str_list, n_pop);
 	}
-	
-	n_pop = 0;
-	while(n_pop < 29){
-		fgets(str_list[n_pop], 30, stdin);
-		str_list[n_pop][strcspn(str_list[n_pop], "\n")] = 0;
-
-		n_pop++;
-	}
-
-	sort_str(str_list, 29);
-
-	calculate_pop_percentage(str_list, 29, n_pop);
 }
