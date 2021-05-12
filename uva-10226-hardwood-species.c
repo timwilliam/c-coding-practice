@@ -31,6 +31,29 @@ void sort_str(char **str, int n){
 }
 
 // count the population of the species
+void calculate_pop_percentage(char **str, int n, int n_pop){
+	int i, current_species_count;
+	double percentage;
+	char current_species[30];
+
+	// other possible solution: using a combination of strstr() to get the first occurence of string,
+	// 					and using strchr() to get the last occurence of string
+
+	current_species_count = 1;
+	for(i = 0; i < n; i++){
+		strcpy(current_species, str[i]);
+
+		if(strcmp(current_species, str[i+1]) == 0){
+			current_species_count++;
+		}
+		else{
+			percentage = (double) current_species_count / (double) n_pop * 100;			
+			printf("%s %.4lf\n", current_species, percentage);
+
+			current_species_count = 1;
+		}
+	}
+}
 
 int main(void){
 	char **str_list, buffer[30];
@@ -54,12 +77,7 @@ int main(void){
 		n_pop++;
 	}
 
-	printf("Before\n");
-	print_str(str_list, 29);
-
 	sort_str(str_list, 29);
 
-	printf("After\n");
-	print_str(str_list, 29);
-
+	calculate_pop_percentage(str_list, 29, n_pop);
 }
