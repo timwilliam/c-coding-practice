@@ -4,7 +4,6 @@
 
 void print_str(char **str, int n){
 	int i;
-	printf("*** Array: ");
 	for(i = 0; i < n; i++){
 		printf("%s, ", str[i]);
 	}
@@ -12,7 +11,7 @@ void print_str(char **str, int n){
 }
 
 // sort the string ascendingly using insertion sort
-void sort_str(char str[4][30], int n){
+void sort_str(char **str, int n){
 	int key, i;
 	char word[30];
 	
@@ -31,6 +30,8 @@ void sort_str(char str[4][30], int n){
 	}
 }
 
+// count the population of the species
+
 int main(void){
 	char **str_list, buffer[30];
 	int i, n_pop, POP_MAX, SPEC_MAX, SPEC_NAME_LEN;
@@ -45,13 +46,20 @@ int main(void){
 		str_list[i] = malloc(SPEC_NAME_LEN * sizeof(char));
 	}
 	
-	int N = 0;
-	while(N < 4){
-		fgets(str_list[N], 30, stdin);
-		str_list[N][strcspn(str_list[N], "\n")] = 0;
+	n_pop = 0;
+	while(n_pop < 29){
+		fgets(str_list[n_pop], 30, stdin);
+		str_list[n_pop][strcspn(str_list[n_pop], "\n")] = 0;
 
-		N++;
+		n_pop++;
 	}
 
-	print_str(str_list, 4);
+	printf("Before\n");
+	print_str(str_list, 29);
+
+	sort_str(str_list, 29);
+
+	printf("After\n");
+	print_str(str_list, 29);
+
 }
