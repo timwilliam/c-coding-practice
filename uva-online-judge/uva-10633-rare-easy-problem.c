@@ -1,32 +1,25 @@
 // Problem  : UVA 10633 - Rare Easy Problem
 // Author   : timwilliam
-// Compiled : 05/30/2021
-
-// Note     : Code is not working well for large number, need new algorithm
+// Compiled : 06/01/2021 (solution v2)
 
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void){
-    unsigned long X, N, M, temp;
+    unsigned long X, N, M, remainder;
 
     while(1){
         scanf("%ld", &X);
         if(X == 0)
             break;
-        
-        N = X + 1;
-        while(1){
-            temp = N - N / 10;
 
-            if(temp > X)
-                break;
-            
-            if(temp == X)
-                printf("%ld ", N);
-        
-            N++;    
-        }
-        printf("\n");
+        // X = 9N / 10
+        N = (X * 10) / 9;
+        remainder = (X * 10) % 9;
+
+        if(remainder == 0)
+            printf("%ld %ld\n", N-1, N);
+        else
+            printf("%ld\n", N);
     }
 }
