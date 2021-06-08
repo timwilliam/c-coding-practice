@@ -7,7 +7,7 @@
 #include <string.h>
 
 int main(void){
-	char input[30] = {0}, output[30] = {0};
+	char input[30] = {0};
 	int i, len, count_caps = 0, count_hyp = 0;
 
 	while(scanf("%s", input) != EOF){
@@ -53,7 +53,6 @@ int main(void){
 		printf(" %d %d\n", count_caps, count_hyp);
 
 		count_caps = count_hyp = 0;
-		memset(output, 0, sizeof(output));
 		memset(input, 0, sizeof(input));
 	}	
 }
