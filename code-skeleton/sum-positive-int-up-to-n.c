@@ -1,6 +1,7 @@
 // Problem	: Recursive function that given an input n, sums all nonnegative integers up to n
 // Author	: timwilliam
 // Compiled	: 06/18/2021
+// Tag		: recursive
 
 #include <stdio.h>
 #include <stdlib.h>
