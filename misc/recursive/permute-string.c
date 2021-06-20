@@ -24,26 +24,28 @@ int factorial(int n){
     return n * factorial(n-1);
 }
 
-void permute_string(char *string){
+void permute_string(char *string, char *prefix){
     int str_len = strlen(string);
     
-    if(str_len == 1){
-        printf("%s\n", string);
+    if(str_len == 0){
+        printf("%s\n", prefix);
         return;
     }
 
     for(int i = 0; i < str_len; i++){
-        printf("%c", string[i]);
-        permute_string(create_string(string, i));
+        //printf("%c", string[i]);
+        strncat(prefix, &string[i], 1);
+        permute_string(create_string(string, i), prefix);
     }
 
+    memset(prefix, 0, sizeof(prefix));
     return;
 }
 
 int main(void){
-    char string[10];
+    char string[10], prefix[10];
 
     while(scanf("%s", string) != EOF){
-        permute_string(string);
+        permute_string(string, prefix);
     }
 }
