@@ -1,7 +1,14 @@
+// Problem	: Print all possible string permutation in ascending order
+// Author	: timwilliam
+// Compiled	: 06/21/2021
+// Tag		: recursive
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+// Remove a char, from a string to create new string
+// e.g.: remove 'A' from 'ABC' to create 'BC'
 char *create_string(char *string, int pos){
     int str_len = strlen(string), j = 0;
     char *new_string = malloc((str_len-1) * sizeof(char));
@@ -17,13 +24,6 @@ char *create_string(char *string, int pos){
     return new_string;
 }
 
-int factorial(int n){
-    if(n == 1)
-        return 1;
-
-    return n * factorial(n-1);
-}
-
 void permute_string(char *string, char *prefix){
     int str_len = strlen(string);
     
@@ -31,21 +31,21 @@ void permute_string(char *string, char *prefix){
         printf("%s\n", prefix);
         return;
     }
+    
+	for(int i = 0; i < str_len; i++){
+		strncat(prefix, &string[i], 1);
+		permute_string(create_string(string, i), prefix);
+		prefix[strlen(prefix) - 1] = 0;		
+	}
 
-    for(int i = 0; i < str_len; i++){
-        //printf("%c", string[i]);
-        strncat(prefix, &string[i], 1);
-        permute_string(create_string(string, i), prefix);
-    }
-
-    memset(prefix, 0, sizeof(prefix));
-    return;
+	return;
 }
 
 int main(void){
-    char string[10], prefix[10];
+    char string[20], prefix[20];
 
     while(scanf("%s", string) != EOF){
+		memset(prefix, 0, sizeof(prefix));
         permute_string(string, prefix);
     }
 }
