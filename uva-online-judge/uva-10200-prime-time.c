@@ -1,14 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <string.h>
 
 int is_prime(int number){
 	int i, count;
+
+	if(number % 2 == 0)
+		return 0;
 
 	count = 0;
 	for(i = 1; i <= number; i++){
 		if(number % i == 0)
 			count++;
+
+		if(count > 2)
+			break;
 	}
 
 	if(count == 2)
@@ -18,24 +24,39 @@ int is_prime(int number){
 }
 
 int main(void){
-	int a, b, i, j, *number, prime_count, range;
+	int a, b, i, j, *number, prime_count, range, memory[10000] = {0};
 	double percentage;
 
+	memset(memory, -1, sizeof(memory));
 	while(1){
 		scanf("%d %d", &a, &b);
 		if(a == 0 && b == 0)
 			break;
 
-		// calculate the number based on the formula, and check if it is a prime number
+		// calculate the number based on the formula
 		range = b - a + 1;
 		number = malloc(range * sizeof(int));
 		prime_count = 0;
 		j = 0;
 		for(i = a; i <= b; i++){
 			number[j] = i * i + i + 41;
-			
-			if(is_prime(number[j]))
-				prime_count++;
+
+			// check if the generated number is prime or not, then save to memory
+			if(memory[i] == -1){
+				if(is_prime(number[j])){
+					memory[i] = 1;
+					prime_count++;
+				}
+				else
+					memory[i] = 0;
+
+				//printf("number = %d, no memory, stats %d\n", number[j], memory[i]);
+			}
+			else{
+				//printf("number = %d, has memory, stats %d\n", number[j], memory[i]);
+				if(memory[i] == 1)
+					prime_count++;
+			}
 
 			j++;	
 		}
