@@ -1,3 +1,7 @@
+// Problem 	: UVA 10200 - Prime Time
+// Author	: timwilliam
+// Compiled	: 06/27/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,6 +43,7 @@ int main(void){
 		prime_count = 0;
 		j = 0;
 		for(i = a; i <= b; i++){
+			printf("[DBG] Now at i = %d\n", i);
 			number[j] = i * i + i + 41;
 
 			// check if the generated number is prime or not, then save to memory
