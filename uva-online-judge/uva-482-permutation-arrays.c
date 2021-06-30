@@ -2,32 +2,46 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main(void){
-    int MAX_ID = 3;
-    int T, array_index[MAX_ID], i, temp;
-    char array[MAX_ID][10];
+int get_n_element(char *string){
+    int i, count = 0;
+    for(i = 0; i < strlen(string); i++){
+        if(string[i] == ' ')
+            count++;
+    }
 
+    return count+1;
+}
+
+int main(void){
+    int T, n_input, i;
+    char array_index[1000], array[1000], *token;
+    char **
+    
     scanf("%d", &T);
     getchar();
 
     while(T--){
         getchar();
 
-        memset(array, 0, sizeof(array));
         memset(array_index, 0, sizeof(array_index));
+        memset(array, 0, sizeof(array));
 
-        for(i = 0; i < MAX_ID; i++){
-            scanf("%d", &temp);
-            array_index[temp-1] = i;
-        }
+        fgets(array_index, 1000, stdin);
+        array_index[strcspn(array_index, "\n")] = 0;        
+
+        printf("elem %d\n", get_n_element(array_index));
+        exit(0);
+
+        token = strtok(array_index, " ");
+        while(token != NULL){
             
-        for(i = 0; i < MAX_ID; i++)
-            scanf("%s", array[i]);
+        }
 
-        for(i = 0; i < MAX_ID; i++)
-            printf("%s\n", array[array_index[i]]);
 
-        printf("\n");
+        fgets(array, 1000, stdin);
+        array[strcspn(array, "\n")] = 0;
+
+         
     }
 
 }
