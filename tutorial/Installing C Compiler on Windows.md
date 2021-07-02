@@ -18,10 +18,10 @@ The written document that I wrote here is for my future reference, contents are 
    - Click the Windows button, find the `MSYS2 64bit` folder, inside it run the `MSYS2 MinGW 64-bit`.
    
    - In the `MinGW` terminal, run the following command to install `gcc`:
-     `$ pacman -Ss mingw64/mingw-w64-x86_64-gcc`
+     `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
    
    - In the `MinGW` terminal, run the following command to install `gdb`:
-     `$ pacman -Ss mingw64/mingw-w64-x86_64-gdb`
+     `$ pacman -S mingw64/mingw-w64-x86_64-gdb`
    
    - Check installation with:
      `$ gcc --version`, `$ g++ --version`, `$ gdb --version`
@@ -38,7 +38,6 @@ The written document that I wrote here is for my future reference, contents are 
    - Add the path we copied before.
    
    - Now, `gcc`, `g++ `, and `gdb` should be able to run from the command prompt.
-4. 
 
 
 
