@@ -1,40 +1,45 @@
-// Compiled	: 05/10/2021
+// Problem      : Insertion Sort
+// Author       : timwilliam
+// Compiled     : 07/05/2021
+// Complexity   : O(n^2)
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
-void print_x(int *x, int n){
-	int i;
-	printf("X: ");
-	for(i = 0; i < n; i++){
-		printf("%d ", x[i]);
-	}
-	printf("\n");
+void print_array(int *array, int array_size){
+    for(int i = 0; i < array_size; i++)
+        printf("%d ", array[i]);
+    
+    printf("\n");
+    return;
 }
 
-void insrt_sort(int *x, int n){
-	int i, key, value;
-	for(i = 1; i < n; i++){
-		key = i;
-		value = x[i];
-		// move the value to the right one by one
-		// 	- only move when key is > 0, since n w/ only 1 element is always in sorted state
-		//	- when appropiate position is found, replace the value in that position
-		while(key > 0 && x[key - 1] > value){
-			x[key] = x[key - 1];
-			key--;
+void insertion_sort(int *array, int array_size){
+    int i, pos, temp;
+
+	for(i = 1; i < array_size - 1; i++){
+		pos = i;
+		temp = array[i];
+
+		while(pos > 0 && array[pos-1] > temp){
+			array[pos] = array[pos-1];
+			pos--;
 		}
-		x[key] = value;
+
+		array[pos] = temp;
 	}
+	
+    return;
 }
 
 int main(void){
-	int x[6] = {7, 2, 4, 1, 5, 3};
-	int n = sizeof(x) / sizeof(x[0]);
+    int array[] = {7, 2, 4, 1, 5, 3};
+    int array_size = sizeof(array) / sizeof(int);
 
-	printf("Before, ");
-	print_x(x, n);
-	insrt_sort(x, n);
-	printf("After, ");
-	print_x(x, n);
+    print_array(array, array_size);
+    insertion_sort(array, array_size);
+    print_array(array, array_size);
+
+    return 0;
 }
