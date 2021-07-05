@@ -41,7 +41,7 @@ void selection_sort(int *array, int array_size){
     int i, min_index;
 
     for(i = 0; i < array_size-1; i++){
-        min_index = find_min(array, i, array_size);
+        min_index = find_min(array, i+1, array_size);
         swap(array, i, min_index);
     }
 
