@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
 void print_array(int *array, int array_size){
     for(int i = 0; i < array_size; i++)
