@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void print_array(int *array, int array_size){
     for(int i = 0; i < array_size; i++)
@@ -14,9 +15,9 @@ void print_array(int *array, int array_size){
 }
 
 // return index of min element
-int find_min(int *array, int array_size){
-    int min = 100, min_index, i;
-    for(i = 0; i < array_size; i++){
+int find_min(int *array, int start_index, int array_size){
+    int min = INT_MAX, min_index, i;
+    for(i = start_index; i < array_size; i++){
         if(array[i] <= min){
             min = array[i];
             min_index = i;
@@ -26,27 +27,34 @@ int find_min(int *array, int array_size){
     return min_index;
 }
 
-int *selection_sort(int *array, int array_size){
-    int *sorted_array = malloc(array_size * sizeof(int));
+void swap(int *array, int index1, int index2){
+    int temp;
+
+    temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+
+    return;
+}
+
+void selection_sort(int *array, int array_size){
     int i, min_index;
 
     for(i = 0; i < array_size; i++){
-        min_index = find_min(array, array_size);
-        sorted_array[i] = array[min_index];
-        array[min_index] = 100;
+        min_index = find_min(array, i, array_size);
+        swap(array, i, min_index);
     }
 
-    return sorted_array;
+    return;
 }
 
 int main(void){
     int array[] = {2, 7, 4, 1, 5, 3};
     int array_size = sizeof(array) / sizeof(int);
-    int *sorted_array;
 
     print_array(array, array_size);
-    sorted_array = selection_sort(array, array_size);
-    print_array(sorted_array, array_size);
+    selection_sort(array, array_size);
+    print_array(array, array_size);
 
     return 0;
 }
