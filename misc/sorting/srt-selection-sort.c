@@ -1,6 +1,7 @@
-// Problem  : Selection Sort
-// Author   : timwilliam
-// Compiled : 07/05/2021
+// Problem      : Selection Sort
+// Author       : timwilliam
+// Compiled     : 07/05/2021
+// Complexity   : O(n^2)
 
 #include <stdio.h>
 #include <stdlib.h>
