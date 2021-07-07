@@ -1,74 +1,50 @@
-// Problem  : UVA 10057 - A Mid-summer Night's Dream
-// Author   : timwilliam
-// Compiled : 05/08/2021
+// Problem	: UVA 10057 - A Mid-summer Night's Dream (v2)
+// Author	: timwilliam
+// Compiled	: 07/07/2021
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
+int cmpfunc(const void *a, const void *b){
+	return *(int*) a - *(int*) b;
+}
 
 int main(void){
-    int x[1000000], n, i, j, A, A_min, n_of_A_min, n_of_psbl_A, sum, min_sum;
+	int n, i, *numbers, median, count, n_possible;
 
-    while(scanf("%d", &n) != EOF){
-        memset(x, 0, sizeof(x));
+	while(scanf("%d", &n) != EOF){
+		numbers = malloc(n * sizeof(int));
+		for(i = 0; i < n; i++)
+			scanf("%d", &numbers[i]);
 
-        for(i = 0; i < n; i++){
-            scanf("%d", &x[i]);
-        }
+		qsort(numbers, n, sizeof(int), cmpfunc);
 
-        // 1. Get minimum possible value for A
-        
-        
-        // Repeat for all possible value of A derived from x
-        for(i = n - 1; i >= 0; i--){
-            sum = 0;
-            for(j = n - 1; j >= 0; j--){
-                // x[j] here is X1, X2, ..., Xn
-                // x[i] here is A
-                sum += abs(x[j] - x[i]);
-            }
+		count = 0;
 
-            //printf("[DBG] A=%d, sum=%d\n", x[i], sum);
+		if(n % 2 == 0){
+			median = n / 2 - 1;
 
-            if(i == n - 1 || sum <= min_sum){
-                min_sum = sum;
-                A_min = x[i]; 
-            }
-            
-            //printf("[DBG] A_min = %d\n", A_min);
-        }
+			for(i = 0; i < n; i++)
+				if(numbers[i] == numbers[median] || numbers[i] == numbers[median+1])
+					count++;
 
-        // 2. Get the number of A that gives the minimum sum
-        n_of_A_min = 0;
-        for(i = 0; i < n; i++){
-            sum = 0;
-            for(j = 0; j < n; j++){
-                sum += abs(x[j] - x[i]);
-            }
+			n_possible = numbers[median+1] - numbers[median] + 1;
+		}
+		else{
+			median = n / 2;
+			
+			for(i = 0; i < n; i++)
+				if(numbers[i] == numbers[median])
+					count++;
+			
+			n_possible = 1;
+		}
 
-            if(sum == min_sum){
-                n_of_A_min++;
-            }
-        }
 
-        // 3. Get the number of possible values for A
-        n_of_psbl_A = 0;    
-        for(i = 0; i < 65536; i++){
-            sum = 0;
-            for(j = 0; j < n; j++){
-                sum += abs(x[j] - i);
-                
-                if(sum > min_sum){
-                    break;
-                }
-            }
+		printf("%d %d %d\n", numbers[median], count, n_possible);
 
-            if(sum == min_sum){
-                n_of_psbl_A++;
-            }
-        }
+		free(numbers);
+	}
 
-        // Print the result
-        printf("%d %d %d\n", A_min, n_of_A_min, n_of_psbl_A);
-    }
+	return 0;
 }
