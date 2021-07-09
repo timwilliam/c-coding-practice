@@ -31,8 +31,8 @@ int is_prime(int number){
     return PRIME[number];
 }
 
-void get_prime_factorization(int number){
-    int i;
+int get_prime_factorization(int number, int *result){
+    int i, n_factor = 0;
     
     while(is_prime(number) == 0){
         i = 2;
@@ -41,29 +41,59 @@ void get_prime_factorization(int number){
         while(1){
             if(is_prime(i) && number % i == 0)
                 break;
-
+            
             i++;
         }
 
-        printf("%d ", i);
-
+        result[n_factor] = i;
+        n_factor++;
+        printf("%d, ", i);
+        
         // update the quotient as the next number to be calculated
         number = number / i;
     }
 
     printf("%d\n", number);
-    return;
+    result[n_factor] = number;
+    n_factor++;
+
+    return n_factor;
+}
+
+int count_n_possible_factor(int *prime_factor, int n_factor){
+    int i, count = 1, temp, prev;
+
+    prev = prime_factor[0];
+    temp = 0;
+    for(i = 0; i < n_factor; i++){
+
+        if(prev == prime_factor[i]){
+            temp++;
+        }
+        else{
+            count *= temp+1;
+            temp = 1;
+            prev = prime_factor[i];
+        }
+    }
+
+    count *= temp+1;
+
+    return count;
 }
 
 int main(void){
-    int n;
+    int n, n_factor, prime_factor[100];
 
     // generate list of prime numbers
     PRIME = gen_list_of_prime(BOUNDARY);
 
+    // works for n >= 2
     while(scanf("%d", &n) != EOF){
         // results will be printed in ascending order
-        get_prime_factorization(n);
+        printf("Prime Factorization: ");
+        n_factor = get_prime_factorization(n, prime_factor);
+        //printf("Number of possible factors = %d\n", count_n_possible_factor(prime_factor, n_factor));
     }
 
     return 0;
