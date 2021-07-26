@@ -45,8 +45,8 @@ int main(void){
     printf("\n");
 
     // cmpfunc_int can be used to sort by grade, whiile cmpfunc_str can be used to sort by name
-    // qsort(grading, n, sizeof(*grading), cmpfunc_int);
-    qsort(grading, n, sizeof(*grading), cmpfunc_str);
+    qsort(grading, n, sizeof(*grading), cmpfunc_int);
+    //qsort(grading, n, sizeof(*grading), cmpfunc_str);
 
     printf("[After Sorting]\n");
     print_grade(grading, n);
