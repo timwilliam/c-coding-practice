@@ -1,66 +1,53 @@
 // Problem  : UVA 10664 - Luggage
 // Author   : timwilliam
-// Compiled : 06/01/2021
+// Compiled : 07/30/2021 (v2)
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int cmpfunc(const void *a, const void *b){
-    return(*(int*) a - *(int*) b);
+    return *(int*) b - *(int*) a;
 }
 
 int main(void){
-    int T, w[20], n, i, sum, sum_a, sum_b;
-    char temp;
-    
-    scanf("%d", &T);
-    while(T--){
-        memset(w, 0, sizeof(w));
-        n = 0;
+    int i, m, weight[20], total_weight, n, bucket1, bucket2;
+    char c;
 
-        while(scanf("%d%c", &w[n], &temp)){
-            if(temp == '\n')
-                break;
-        
+    scanf("%d", &m);
+    while(m--){
+        total_weight = n = 0;
+        memset(weight, 0, sizeof(*weight));
+
+        while(1){
+            scanf("%d%c", &weight[n], &c);
+            total_weight += weight[n];
+
             n++;
+            if(c == '\n')
+                break;
         }
-
-        sum = 0;
-        for(i = 0; i < n+1; i++)
-            sum += w[i];
-    
-        if(sum % 2 != 0){
-            printf("NO\n");
-            continue;
-        }
-
-        // sort ascending
-        qsort(w, n+1, sizeof(int), cmpfunc);
-
-        // use greedy algorithm loop over all the weights,
-        //   put each number in the set whose sum is smallest
-        sum_a = sum_b = 0;
-        while(n >= 0){
-            if(sum_a == 0 && sum_b == 0){
-                sum_a = w[n];
-                sum_b = w[n-1];
         
-                n -= 2;        
-            }
-            else if(sum_b < sum_a){
-                sum_b += w[n];
-                n--;
-            }
-            else{
-                sum_a += w[n];
-                n--;
-            }
+        if(total_weight % 2 != 0){
+            printf("NO\n");
+            break;
         }
-    
-        if(sum_a == sum_b)
+
+        qsort(weight, n, sizeof(*weight), cmpfunc); // sort descending
+
+        bucket1 = bucket2 = 0; 
+        for(i = 0; i < n; i++){
+            if(bucket1 <= bucket2)
+                bucket1 += weight[i];
+            else
+                bucket2 += weight[i];
+        }
+
+        if(bucket1 == bucket2)
             printf("YES\n");
         else
             printf("NO\n");
     }
+
+    return 0;
 }
