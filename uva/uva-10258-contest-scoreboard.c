@@ -11,7 +11,7 @@
 #define N_QUESTIONS 10
 
 typedef struct _INPUT{
-    int correct_time, n_incorrect, n_other;
+    int correct_time, n_incorrect, n_other, is_input, is_correct;
 }INPUT;
 
 typedef struct _SCOREBOARD{
@@ -57,6 +57,7 @@ int cmpfunc(const void *a, const void*b){
 void print_scoreboard(){
     int i;
 
+    // only prints the score for the contestant who participates in the test
     for(i = 0; i < N_CONTESTANTS; i++){
         if(final_score[i].q_answered > 0 || final_score[i].is_participating == 1)
             printf("%d %d %d\n", final_score[i].id, final_score[i].q_answered, final_score[i].total_time);
@@ -71,11 +72,11 @@ void process_scoreboard(){
 
     for(i = 0; i < N_CONTESTANTS; i++){
         for(j = 0; j < N_QUESTIONS; j++){
-            // a question with id j is answered correctly, add it to the scoreboard
-            if(individual_score[i][j].correct_time > 0 || individual_score[i][j].n_other > 0){
+            if(individual_score[i][j].is_correct || individual_score[i][j].n_other > 0){
                 final_score[i].id = i + 1;
                 final_score[i].is_participating = 1;
 
+                // for question that is answered correctly
                 if(individual_score[i][j].correct_time > 0){
                     final_score[i].q_answered += 1;
                     
@@ -93,24 +94,40 @@ void process_scoreboard(){
 
 void insert_input(int id, int q_number, int time, char status){
     if(status == 'C'){
-        individual_score[id-1][q_number].correct_time = time;
-    }
-    else if(status == 'I'){
-        individual_score[id-1][q_number].n_incorrect += 1;
+        individual_score[id-1][q_number].is_correct = 1;
+
+        // first correct answer
+        if(individual_score[id-1][q_number].is_input == 0){
+            individual_score[id-1][q_number].correct_time = time;
+            individual_score[id-1][q_number].is_input = 1;
+        }
+        // update only if the new time is lower than previous time
+        else if(time < individual_score[id-1][q_number].correct_time)
+            individual_score[id-1][q_number].correct_time = time;
     }
     else{
+        if(status == 'I')
+            // don't mind it if there is a previously correct answer already present
+            if(individual_score[id-1][q_number].is_correct == 0)
+                individual_score[id-1][q_number].n_incorrect += 1;
+
+        // note that other status is counted together with the 'I' status
         individual_score[id-1][q_number].n_other += 1;
     }
+    
     return;
 }
 
 void reset(){
     int i, j;
     for(i = 0; i < N_CONTESTANTS; i++){
-        for(j = 0; j < N_QUESTIONS; j++)
+        for(j = 0; j < N_QUESTIONS; j++){
             individual_score[i][j].correct_time = 0;
             individual_score[i][j].n_incorrect = 0;
             individual_score[i][j].n_other = 0;
+            individual_score[i][j].is_input = 0;
+            individual_score[i][j].is_correct = 0;
+        }
     }
 
     return;
