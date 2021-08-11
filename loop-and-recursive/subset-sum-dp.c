@@ -8,25 +8,33 @@
 #include <math.h>
 #include <string.h>
 
+#define KEYSIZE 10
+
 typedef struct _MEMORY{
-    char key[10];
+    char key[KEYSIZE];
     int return_value;
 }MEMORY;
 
+// global variable declaration for memory
+int size_of_mem;
+MEMORY *my_mem;
+
 // clear out the memory
-void resetMem(MEMORY *my_mem, int size_of_mem){
+void resetMem(){
     int i;
 
     for(i = 0; i < size_of_mem; i++){
         strcpy(my_mem[i].key, "NA");
         my_mem[i].return_value = -1;
     }
+
     return;
 }
 
 // print out the contents of the memory for debugging purposes
-void printMem(MEMORY *my_mem, int size_of_mem){
+void printMem(){
     int i;
+    
     for(i = 0; i < size_of_mem; i++){
         if(strcmp(my_mem[i].key, "NA") == 0 && my_mem[i].return_value == -1)
             printf("Mem slot %d is empty!\n", i);
@@ -37,8 +45,10 @@ void printMem(MEMORY *my_mem, int size_of_mem){
     return;
 }
 
-int isKeyExist(MEMORY *my_mem, int size_of_mem, char *target_key){
+int isKeyExist(char *target_key){
     int i;
+    
+    // return the location of the key
     for(i = 0; i < size_of_mem; i++)
         if(strcmp(my_mem[i].key, target_key) == 0)
             return i;
@@ -53,9 +63,9 @@ void hashFunction(int target_sum, int marker, char *key){
     return;
 }
 
-void insertKey(MEMORY *my_mem, int size_of_mem, char *key, int return_value){
+void insertKey(char *key, int return_value){
     // only fill in new data
-    if(isKeyExist(my_mem, size_of_mem, key) > -1)
+    if(isKeyExist(key) > -1)
         return;
 
     int i;
@@ -72,14 +82,15 @@ void insertKey(MEMORY *my_mem, int size_of_mem, char *key, int return_value){
 }
 
 // the main function used to calculate the results
-int getNumberOfSubset(int *set, int target_sum, int marker, MEMORY *my_mem, int size_of_mem){
-    char key[10];
-    char *ptr;
+int getNumberOfSubset(int *set, int target_sum, int marker){
+    char key[10], *ptr;
     int key_location, temp;
 
+    // hashes are stored in key variable
     hashFunction(target_sum, marker, key);
-    key_location = isKeyExist(my_mem, size_of_mem, key);
+    key_location = isKeyExist(key);
     
+    // return previously calculate value that is stored in memory
     if(key_location > -1)
         return my_mem[key_location].return_value;
     
@@ -90,29 +101,32 @@ int getNumberOfSubset(int *set, int target_sum, int marker, MEMORY *my_mem, int 
     else if(marker < 0)
         return 0;
     else if(set[marker] > target_sum)
-        temp = getNumberOfSubset(set, target_sum, marker - 1, my_mem, size_of_mem);
+        temp = getNumberOfSubset(set, target_sum, marker - 1);
     else
-        temp = getNumberOfSubset(set, target_sum, marker - 1, my_mem, size_of_mem) + \
-                getNumberOfSubset(set, target_sum - set[marker], marker - 1, my_mem, size_of_mem);
+        temp = getNumberOfSubset(set, target_sum, marker - 1) + \
+                getNumberOfSubset(set, target_sum - set[marker], marker - 1);
     
-    insertKey(my_mem, size_of_mem, key, temp);
+    insertKey(key, temp);
     return temp;
 }
 
 int main(void){
+    // User Input
     int set[4] = {2, 4, 6, 10};
     int target_sum = 16;
 
-    int size_of_set = sizeof(set) / sizeof(int);
-    int size_of_mem = (int) (pow(2, sizeof + 1) - 1);
-    
     int n_subset;
-    MEMORY *my_mem = (MEMORY*) malloc(size_of_mem * sizeof(MEMORY));
-    resetMem(my_mem, size_of_mem);
+    int size_of_set = sizeof(set) / sizeof(int);
 
-    n_subset = getNumberOfSubset(set, target_sum, size_of_set - 1, my_mem, size_of_mem);
+    size_of_mem = (int) (pow(2, sizeof + 1) - 1);
+    my_mem = (MEMORY*) malloc(size_of_mem * sizeof(MEMORY));
+    resetMem();
+
+    n_subset = getNumberOfSubset(set, target_sum, size_of_set - 1);
     printf("%d\n", n_subset);
-    printMem(my_mem, size_of_mem);
+    
+    // use the following function to show the content of memory
+    // printMem();
 
     return 0;
 }
