@@ -118,6 +118,7 @@ int main(void){
     int n_subset;
     int size_of_set = sizeof(set) / sizeof(int);
 
+    // the number of all possible nodes in the tree is 2^(n+1) - 1
     size_of_mem = (int) (pow(2, sizeof + 1) - 1);
     my_mem = (MEMORY*) malloc(size_of_mem * sizeof(MEMORY));
     resetMem();
