@@ -1,3 +1,7 @@
+// Problem  : GPE Exam 20210714 Problem D - Social Distancing 2
+// Author   : timwilliam
+// Compiled : 08/15/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 
