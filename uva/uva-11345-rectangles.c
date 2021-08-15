@@ -1,3 +1,7 @@
+// Problem  : UVA 11345 - Rectangles
+// Author   : timwilliam
+// Compiled : 08/13/2021
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -44,6 +48,7 @@ int main(void){
             temp.y2 = getMin(temp.y2, current.y2);
         }
 
+        // the rectangle does not intersect, so A remains 0
         if(temp.x1 < temp.x2 && temp.y1 < temp.y2)
             A = (temp.x2 - temp.x1) * (temp.y2 - temp.y1);
 
