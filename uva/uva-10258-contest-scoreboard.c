@@ -21,17 +21,6 @@ typedef struct _SCOREBOARD{
 INPUT individual_score[N_CONTESTANTS][N_QUESTIONS];
 SCOREBOARD final_score[N_CONTESTANTS];
 
-int is_empty(const char *buffer){
-    while(*buffer != '\0'){
-        if(isspace(*buffer) == 0)
-            return 0;
-        
-        buffer++;
-    }
-
-    return 1;
-}
-
 int cmpfunc(const void *a, const void*b){
     // sort by q_answered (descending)
     if(((SCOREBOARD*)a)->q_answered > ((SCOREBOARD*)b)->q_answered)
@@ -143,7 +132,7 @@ int main(void){
     getchar();
     getchar();
     while(T--){
-        while((fgets(buffer, sizeof(buffer), stdin) != NULL) && (is_empty(buffer) == 0)){
+        while((fgets(buffer, sizeof(buffer), stdin) != NULL) && (isspace(buffer[0]) == 0)){
             sscanf(buffer, "%d %d %d %c", &id, &q_number, &time, &status);
             insert_input(id, q_number, time, status);
         }
