@@ -2,70 +2,81 @@
 #include <stdlib.h>
 #include <string.h>
 
-void printDigits(int *digits, int digitsSize) {
-    int i;
+void printArr(int *arr, int n) {
+	int i;
 
-    for(i = 0; i < digitsSize; i++) {
-        printf("%d", digits[i]);
-    }
-    printf("\n");
+	printf("{ ");
+	for(i = 0; i < n; i++) {
+		printf("%2d", arr[i]);
 
-    return;
+		if(i < n - 1) {
+			printf(", ");
+		}
+		else {
+			printf(" }\n");
+		}
+	}
+
+	return;
 }
 
-int *plusOne(int *digits, int digitsSize, int *returnSize) {
-    int *returnDigits = malloc(*returnSize * sizeof(int));
-    memcpy(returnDigits + 1, digits, digitsSize * sizeof(int));
+void regroup(int *returnDigits, int i) {
+	returnDigits[i]		-= 10;
+	returnDigits[i-1]	+= 1;
+}
 
-    // printDigits(returnDigits, *returnSize);
-    returnDigits[*returnSize - 1] += 1;
-    // printDigits(returnDigits, *returnSize);
+int* plusOne(int* digits, int digitsSize, int* returnSize) {
+	int i;
 
-    int i; 
-    for(i = *returnSize - 1; i > 0; i--) {
-        if(returnDigits[i] > 9) {
-            returnDigits[i]     -= 10;
-            returnDigits[i - 1] += 1;
-        }
-    }
-    
-    // printDigits(returnDigits, *returnSize);
+	// create new array to store the results
+	*returnSize = digitsSize;
+	int *returnDigits = (int*) calloc(digitsSize, sizeof(int));
+	memcpy(returnDigits, digits, digitsSize * sizeof(int));
 
-    // printf("debug %d %d %d\n", *returnDigits, *(returnDigits + 1), *(returnDigits + 2));
+	// do plus one on the least significant digit
+	returnDigits[*returnSize-1] += 1;
 
-    if(returnDigits[0] == 0) {
-        *returnSize -= 1;
+	// check if regroup is needed after plus one
+	for(i = *returnSize - 1; i > 0; i--) {
+		if(returnDigits[i] > 9) {
+			regroup(returnDigits, i);
+		}
+	}
 
-        // printf("before realloc\n");
-        // printDigits(returnDigits, *returnSize + 1);
-        // printf("%d\n", *(returnDigits + 1));
-        memcpy(returnDigits, returnDigits + 1, *returnSize * sizeof(int));
-        // printDigits(returnDigits, *returnSize + 1);
-        returnDigits = realloc(returnDigits, *returnSize);
+	// if most significant digit is > 9, reallocate extra memory to store additional element
+	if(returnDigits[0] > 9) {
+		*returnSize += 1;
+		returnDigits = (int*) realloc(returnDigits, *returnSize * sizeof(int));
+	
+		// extra element is added to the end of the array, move all element one position to the right
+		// use memmove instead of memcpy to copy overlapping memory blocks
+		memmove(returnDigits + 1, returnDigits, (*returnSize - 1) * sizeof(int));
+		memset(returnDigits, 0, sizeof(int));
 
-        // printf("after realloc\n");
-        // printDigits(returnDigits, *returnSize);
-        // printDigits(returnDigits, *returnSize);
-    }
+		// do regroup for the most significant digit
+		regroup(returnDigits, 1);
+	}
 
-    return returnDigits;
+	return returnDigits;
 }
 
 int main(void) {
-    // int digits[] = {1, 2, 3};
-    int digits[] = {1, 2, 9};
-    // int digits[] = {1, 9, 3};
-    // int digits[] = {9, 9, 9};
+	// int digits[] = {1, 2, 3};
+	// int digits[] = {4, 3, 2, 1};
+	// int digits[] = {9};
+	// int digits[] = {9, 9, 9};
+	int digits[] = {9, 9};
+	
+	int n = sizeof(digits) / sizeof(digits[0]);
 
-    int *returnDigits, returnSize, digitsSize;
-    
-    digitsSize = sizeof(digits) / sizeof(digits[0]);
-    returnSize = digitsSize + 1;
-    returnDigits = plusOne(digits, digitsSize, &returnSize);
+	printArr(digits, n);
 
-    printDigits(returnDigits, returnSize);
+	int resultSize;
+	int *result = plusOne(digits, n, &resultSize);
 
-    free(returnDigits);
+	printArr(result, resultSize);
 
-    return 0;
+	free(result);
+
+	return 0;
 }
