@@ -7,7 +7,7 @@ typedef struct grading_t{
 }Grading;
 
 Grading *head;
-Grading *tail;
+int gradeCount;
 
 void print(){
 	Grading *temp = head;
@@ -20,21 +20,40 @@ void print(){
 	printf("\n");
 }
 
-void insert(int grade){
+void insert(int grade, int pos){
+	if(pos > gradeCount + 1){
+		printf("Invalid position! (gradeCount=%2d)\n", gradeCount);
+		return;
+	}
 
 	Grading *temp = (Grading*) malloc(sizeof(Grading));
+	temp->grade = grade;
 
 	if(head == NULL){
+		temp->next = NULL;
 		head = temp;
-		tail = temp;
-
-		tail->grade = grade;
-		tail->next = NULL;
 	}
 	else{
-		temp->grade = grade;
-		tail->next = temp;
-		tail = temp;
+		int currentPos = 1;
+		Grading *insertTail = head;
+
+		while(currentPos < gradeCount - 1){
+			insertTail = insertTail->next;
+			currentPos++;
+		}
+
+		// when inserting at head, just need to link temp to head, and then update head as temp
+		if(pos == 1){
+			temp->next = head;
+			head = temp;
+		}
+		// otherwise, link temp to pos + 1, and then update pos - 1 to link to temp
+		else{
+			temp->next = insertTail->next;
+			insertTail->next = temp;
+		}
+
+		gradeCount++;
 	}
 
 	return;
@@ -42,11 +61,17 @@ void insert(int grade){
 
 int main(void){
 	head = NULL;
-	tail = NULL;
+	gradeCount = 0;
 
-	insert(99);
-	insert(70);
-	insert(85);
+	insert(90, 1);
+	print();
+	insert(70, 1);
+	print();
+	insert(85, 3);
+	print();
+	insert(85, 2);
+	print();
+	insert(100, 1);
 	print();
 
 	return 0;
