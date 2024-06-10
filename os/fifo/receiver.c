@@ -32,6 +32,7 @@ int main(void)
 
     printf("Received: %s\n", buffer);
 
+    unlink(FIFO_PATH);
     close(fd);
     return 0;
 }
